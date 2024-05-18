@@ -1,17 +1,34 @@
+
 const ASCII_CHARS = Array.from({ length: 95 }, (_, i) => String.fromCharCode(i + 32));
+let currentData = null;
 
 self.onmessage = async (e) => {
-  const { imageDataURL, resolution, isColor } = e.data;
+  const { imageDataURL, resolution, isColor, asciiChars } = e.data;
+  const characters = asciiChars || ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
+  currentData = { imageDataURL, resolution, isColor, asciiChars: characters, width: resolution };
+  drawAsciiArt(imageDataURL, resolution, isColor, characters);
+};
 
-  const blob = await fetch(imageDataURL).then(res => res.blob());
-  const bitmap = await createImageBitmap(blob);
+async function drawAsciiArt(imageDataURL, resolution, isColor, asciiChars) {
+  const ASCII_CHARS = asciiChars.split('').filter((char, index, self) => self.indexOf(char) === index);
 
-  const offscreenCanvas = new OffscreenCanvas(resolution, resolution * bitmap.height / bitmap.width);
+  const imageBlob = await fetch(imageDataURL).then(res => res.blob());
+  const bitmap = await createImageBitmap(imageBlob);
+
+  // Limit resolution to maximum width of 3000 pixels
+  const width = Math.min(Math.round(resolution), 3000);
+  const height = Math.round(width * bitmap.height / bitmap.width);
+
+  // Ensure width and height are valid unsigned long values
+  const validWidth = Math.max(1, width);
+  const validHeight = Math.max(1, height);
+
+  const offscreenCanvas = new OffscreenCanvas(validWidth, validHeight);
   const ctx = offscreenCanvas.getContext('2d');
   ctx.drawImage(bitmap, 0, 0, offscreenCanvas.width, offscreenCanvas.height);
   const imageData = ctx.getImageData(0, 0, offscreenCanvas.width, offscreenCanvas.height);
 
-  const asciiArtData = pixelsToAscii(imageData, resolution, isColor);
+  const asciiArtData = pixelsToAscii(imageData, resolution, isColor, ASCII_CHARS);
   const asciiCanvas = new OffscreenCanvas(asciiArtData.width, asciiArtData.height);
   const asciiCtx = asciiCanvas.getContext('2d');
 
@@ -20,16 +37,20 @@ self.onmessage = async (e) => {
 
   asciiArtData.data.forEach((row, y) => {
     row.forEach((cell, x) => {
-      asciiCtx.fillStyle = cell.color;
+      asciiCtx.fillStyle = isColor ? cell.color : '#000';
       asciiCtx.fillText(cell.char, x * 10, y * 10);
     });
   });
 
-  const bitmapResult = asciiCanvas.transferToImageBitmap();
-  self.postMessage({ bitmap: bitmapResult, width: asciiArtData.width, height: asciiArtData.height, text: asciiArtData.text, htmlText: asciiArtData.htmlText }, [bitmapResult]);
-};
+  const asciiBlob = await asciiCanvas.convertToBlob();
+  const blobURL = URL.createObjectURL(asciiBlob);
 
-function pixelsToAscii(imageData, resolution, isColor) {
+  const bitmapResult = await createImageBitmap(asciiCanvas);
+  
+  self.postMessage({ blobURL: blobURL, text: asciiArtData.text, htmlText: asciiArtData.htmlText, bitmap: bitmapResult, width: asciiArtData.width, height: asciiArtData.height }, [bitmapResult]);
+}
+
+function pixelsToAscii(imageData, resolution, isColor, ASCII_CHARS) {
   const { width, height, data } = imageData;
   const cellSize = 10;
   const asciiData = [];
@@ -47,10 +68,10 @@ function pixelsToAscii(imageData, resolution, isColor) {
       const avg = (r + g + b) / 3;
       const charIndex = Math.floor((avg / 255) * (ASCII_CHARS.length - 1));
       const char = ASCII_CHARS[charIndex];
-      const color = isColor ? `rgb(${r},${g},${b})` : `rgb(${avg},${avg},${avg})`;
+      const color = isColor ? `rgb(${r},${g},${b})` : '#000';
       row.push({ char: char, color: color });
       rowText += char;
-      rowHtml += isColor ? `<span style="color: ${color};">${char}</span>` : char;
+      rowHtml += isColor ? `<span style="color: ${color};">${char}</span>` : `<span style="color: #000;">${char}</span>`;
     }
     asciiData.push(row);
     asciiText += rowText + '\n';
@@ -58,10 +79,10 @@ function pixelsToAscii(imageData, resolution, isColor) {
   }
   htmlText += '</pre>';
   return {
-    width: width * cellSize,
-    height: height * cellSize,
     data: asciiData,
     text: asciiText,
-    htmlText: htmlText
+    htmlText: htmlText,
+    width: width * cellSize,
+    height: height * cellSize
   };
 }
