@@ -1,7 +1,6 @@
 body {
   display: flex;
   flex-direction: column;
-  align-items: center;
   height: 100vh;
   margin: 0;
   font-family: Arial, sans-serif;
@@ -10,12 +9,36 @@ body {
 }
 
 header {
+  width: 100%;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
 }
 
 header h1 {
   margin: 0;
   font-size: 24px;
+}
+
+header .link-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.link-container a {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  position: relative;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .container {
