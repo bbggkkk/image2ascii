@@ -1,11 +1,6 @@
-
-const ASCII_CHARS = Array.from({ length: 95 }, (_, i) => String.fromCharCode(i + 32));
-let currentData = null;
-
 self.onmessage = async (e) => {
   const { imageDataURL, resolution, isColor, asciiChars } = e.data;
-  const characters = asciiChars || ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
-  currentData = { imageDataURL, resolution, isColor, asciiChars: characters, width: resolution };
+  const characters = asciiChars || ' `.-\'"^,:;~_+*!ilrcvuxnztfoeakhsydbwqpmgz[]{}()/\\|1234567890&%$#@ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   drawAsciiArt(imageDataURL, resolution, isColor, characters);
 };
 
@@ -56,6 +51,9 @@ function pixelsToAscii(imageData, resolution, isColor, ASCII_CHARS) {
   const asciiData = [];
   let asciiText = '';
   let htmlText = '<pre style="font: 10px monospace; line-height: 10px;">';
+
+  const luminance = (r, g, b) => 0.299 * r + 0.587 * g + 0.114 * b;
+
   for (let y = 0; y < height; y++) {
     const row = [];
     let rowText = '';
@@ -65,7 +63,7 @@ function pixelsToAscii(imageData, resolution, isColor, ASCII_CHARS) {
       const r = data[offset];
       const g = data[offset + 1];
       const b = data[offset + 2];
-      const avg = (r + g + b) / 3;
+      const avg = luminance(r, g, b);
       const charIndex = Math.floor((avg / 255) * (ASCII_CHARS.length - 1));
       const char = ASCII_CHARS[charIndex];
       const color = isColor ? `rgb(${r},${g},${b})` : '#000';
@@ -74,8 +72,8 @@ function pixelsToAscii(imageData, resolution, isColor, ASCII_CHARS) {
       rowHtml += isColor ? `<span style="color: ${color};">${char}</span>` : `<span style="color: #000;">${char}</span>`;
     }
     asciiData.push(row);
-    asciiText += rowText + '\n';
-    htmlText += rowHtml + '\n';
+    asciiText += rowText + '\\n';
+    htmlText += rowHtml + '\\n';
   }
   htmlText += '</pre>';
   return {
