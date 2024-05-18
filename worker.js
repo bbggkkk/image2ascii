@@ -1,6 +1,6 @@
 self.onmessage = async (e) => {
   const { imageDataURL, resolution, isColor, asciiChars } = e.data;
-  const characters = asciiChars || 'ZYXWVUTSRQPONMLKJIHGFEDCBA@#$%&0987654321|\\/)(}{][zgmpqwbdyshkaeoftznxuvcrli!*+_~;:,^"\'-.` ';
+  const characters = asciiChars || '$@B%8&WM#*oahkbdpqwmZOQ0CLQJYUXzvcunxrjft\|)(1}{][?-_+~<>i!lI;:,^`\'.';
   drawAsciiArt(imageDataURL, resolution, isColor, characters);
 };
 
