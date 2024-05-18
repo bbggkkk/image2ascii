@@ -70,7 +70,7 @@ downloadButton.addEventListener('click', () => {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = colorMode === 'monochrome' ? 'ascii_art.txt' : 'ascii_art.html';
+  a.download = colorMode === 'monochrome' ? `ascii_art.txt` : `ascii_art_${colorMode}.html`;
   a.click();
   URL.revokeObjectURL(url);
 });

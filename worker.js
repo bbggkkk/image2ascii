@@ -1,6 +1,6 @@
 self.onmessage = async (e) => {
   const { imageDataURL, resolution, colorMode, asciiChars } = e.data;
-  const characters = asciiChars || ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
+  const characters = asciiChars || '$@B%8&WM#*oahkbdpqwmZOQ0CLQJYUXzvcunxrjft/\\|)(1}{][?-_+~<>i!lI;:,^`\'. ';
   drawAsciiArt(imageDataURL, resolution, colorMode, characters);
 };
 
@@ -41,7 +41,7 @@ async function drawAsciiArt(imageDataURL, resolution, colorMode, asciiChars) {
   const blobURL = URL.createObjectURL(asciiBlob);
 
   const bitmapResult = await createImageBitmap(asciiCanvas);
-  
+
   self.postMessage({ blobURL: blobURL, text: asciiArtData.text, htmlText: asciiArtData.htmlText, bitmap: bitmapResult, width: asciiArtData.width, height: asciiArtData.height }, [bitmapResult]);
 }
 
@@ -49,8 +49,10 @@ function pixelsToAscii(imageData, colorMode, ASCII_CHARS) {
   const { width, height, data } = imageData;
   const cellSize = 10;
   const asciiData = [];
+  const usedColors = new Set();
   let asciiText = '';
   let htmlText = '<pre style="font: 10px monospace; line-height: 10px;">';
+  let styleTag = '<style>';
 
   const luminance = (r, g, b) => 0.299 * r + 0.587 * g + 0.114 * b;
 
@@ -66,16 +68,24 @@ function pixelsToAscii(imageData, colorMode, ASCII_CHARS) {
       const avg = luminance(r, g, b);
       const charIndex = Math.floor((avg / 255) * (ASCII_CHARS.length - 1));
       const char = ASCII_CHARS[charIndex];
-      const color = getColor(r, g, b, colorMode);
+      const { colorClass, color } = getColorClass(r, g, b, colorMode);
+      usedColors.add(colorClass);
       row.push({ char: char, color: color });
       rowText += char;
-      rowHtml += `<span style="color: ${color};">${char}</span>`;
+      rowHtml += `<span class="${colorClass}">${char}</span>`;
     }
     asciiData.push(row);
     asciiText += rowText + '\n';
     htmlText += rowHtml + '\n';
   }
   htmlText += '</pre>';
+
+  if (colorMode !== 'monochrome') {
+    styleTag += generateColorClasses(Array.from(usedColors), colorMode);
+    styleTag += '</style>';
+    htmlText = styleTag + htmlText;
+  }
+
   return {
     data: asciiData,
     text: asciiText,
@@ -85,35 +95,59 @@ function pixelsToAscii(imageData, colorMode, ASCII_CHARS) {
   };
 }
 
-function getColor(r, g, b, mode) {
+function getColorClass(r, g, b, mode) {
+  let colorClass, color;
   switch (mode) {
     case 'monochrome':
-      return `rgb(0,0,0)`
+      colorClass = 'c-0-0-0';
+      color = 'rgb(0,0,0)';
+      break;
     case 'grayscale':
       const gray = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
-      return `rgb(${gray},${gray},${gray})`;
+      colorClass = `c-${gray}-${gray}-${gray}`;
+      color = `rgb(${gray},${gray},${gray})`;
+      break;
     case '16colors':
-      return get16Color(r, g, b);
+      colorClass = get16ColorClass(r, g, b);
+      color = `rgb(${colorClass.split('-').slice(1).join(',')})`;
+      break;
     case '256colors':
-      return get256Color(r, g, b);
+      colorClass = get256ColorClass(r, g, b);
+      color = `rgb(${colorClass.split('-').slice(1).join(',')})`;
+      break;
     case 'fullcolor':
     default:
-      return `rgb(${r},${g},${b})`;
+      colorClass = `c-${r}-${g}-${b}`;
+      color = `rgb(${r},${g},${b})`;
+      break;
   }
+  return { colorClass, color };
 }
 
-function get16Color(r, g, b) {
+function get16ColorClass(r, g, b) {
   const levels = [0, 128, 255];
   const red = levels[Math.round(r / 128)];
   const green = levels[Math.round(g / 128)];
   const blue = levels[Math.round(b / 128)];
-  return `rgb(${red},${green},${blue})`;
+  return `c16-${red}-${green}-${blue}`;
 }
 
-function get256Color(r, g, b) {
+function get256ColorClass(r, g, b) {
   const levels = [0, 95, 135, 175, 215, 255];
   const red = levels[Math.round(r / 51)];
   const green = levels[Math.round(g / 51)];
   const blue = levels[Math.round(b / 51)];
-  return `rgb(${red},${green},${blue})`;
+  return `c256-${red}-${green}-${blue}`;
+}
+
+function generateColorClasses(usedColors, mode) {
+  let classes = '';
+  usedColors.forEach(colorClass => {
+    const match = colorClass.match(/c(16|256)?-(\d+)-(\d+)-(\d+)/);
+    if (match) {
+      const [, , r, g, b] = match;
+      classes += `.${colorClass} { color: rgb(${r},${g},${b}); }\n`;
+    }
+  });
+  return classes;
 }
