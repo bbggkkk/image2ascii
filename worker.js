@@ -56,6 +56,22 @@ function pixelsToAscii(imageData, colorMode, ASCII_CHARS) {
 
   const luminance = (r, g, b) => 0.299 * r + 0.587 * g + 0.114 * b;
 
+  // 최대 밝기와 최소 밝기 계산
+  let minLuminance = Infinity;
+  let maxLuminance = -Infinity;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const offset = (y * width + x) * 4;
+      const r = data[offset];
+      const g = data[offset + 1];
+      const b = data[offset + 2];
+      const lum = luminance(r, g, b);
+      if (lum < minLuminance) minLuminance = lum;
+      if (lum > maxLuminance) maxLuminance = lum;
+    }
+  }
+
+  // 밝기를 정규화하여 ASCII 문자 선택
   for (let y = 0; y < height; y++) {
     const row = [];
     let rowText = '';
@@ -65,8 +81,9 @@ function pixelsToAscii(imageData, colorMode, ASCII_CHARS) {
       const r = data[offset];
       const g = data[offset + 1];
       const b = data[offset + 2];
-      const avg = luminance(r, g, b);
-      const charIndex = Math.floor((avg / 255) * (ASCII_CHARS.length - 1));
+      const lum = luminance(r, g, b);
+      const normalizedLum = (lum - minLuminance) / (maxLuminance - minLuminance);
+      const charIndex = Math.floor(normalizedLum * (ASCII_CHARS.length - 1));
       const char = ASCII_CHARS[charIndex];
       const { colorClass, color } = getColorClass(r, g, b, colorMode);
       usedColors.add(colorClass);
