@@ -1,11 +1,10 @@
-
 const worker = new Worker('worker.js');
 let asciiText = ''; // ASCII 텍스트를 저장할 변수
-let isColor = false; // 컬러 여부를 저장할 변수
+let colorMode = 'monochrome'; // 기본 색상 모드
 
 const fileInput = document.getElementById('upload');
 const resolutionInput = document.getElementById('resolution');
-const colorInput = document.getElementById('color');
+const colorModeSelect = document.getElementById('colorMode');
 const asciiCharsInput = document.getElementById('asciiChars');
 const generateButton = document.getElementById('generate');
 const downloadButton = document.getElementById('download');
@@ -17,8 +16,8 @@ fileInput.addEventListener('change', () => {
 
 generateButton.addEventListener('click', () => {
   const resolution = parseInt(resolutionInput.value, 10);
-  isColor = colorInput.checked;
-  const asciiChars = asciiCharsInput.value;
+  colorMode = colorModeSelect.value;
+  const asciiChars = asciiCharsInput.value || ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
 
   if (resolution <= 0) {
     alert('Resolution must be greater than 0');
@@ -30,14 +29,14 @@ generateButton.addEventListener('click', () => {
     // 버튼 비활성화
     fileInput.disabled = true;
     resolutionInput.disabled = true;
-    colorInput.disabled = true;
+    colorModeSelect.disabled = true;
     asciiCharsInput.disabled = true;
     generateButton.disabled = true;
     generateButton.textContent = 'Processing...';
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      worker.postMessage({ imageDataURL: e.target.result, resolution: resolution, isColor: isColor, asciiChars: asciiChars });
+      worker.postMessage({ imageDataURL: e.target.result, resolution: resolution, colorMode: colorMode, asciiChars: asciiChars });
     };
     reader.readAsDataURL(file);
   }
@@ -45,7 +44,7 @@ generateButton.addEventListener('click', () => {
 
 worker.onmessage = async (e) => {
   const { blobURL, text, htmlText, bitmap, width, height } = e.data;
-  asciiText = isColor ? htmlText : text; // 컬러 여부에 따라 저장할 텍스트 결정
+  asciiText = colorMode === 'monochrome' ? text : htmlText; // 컬러 여부에 따라 저장할 텍스트 결정
 
   const canvas = document.getElementById('asciiCanvas');
   const ctx = canvas.getContext('2d');
@@ -59,7 +58,7 @@ worker.onmessage = async (e) => {
   // 버튼 및 파일 입력 필드 상태 초기화
   fileInput.disabled = false;
   resolutionInput.disabled = false;
-  colorInput.disabled = false;
+  colorModeSelect.disabled = false;
   asciiCharsInput.disabled = false;
   generateButton.disabled = false; // 파일이 선택되지 않았으므로 버튼 비활성화
   generateButton.textContent = 'Generate ASCII Art';
@@ -67,11 +66,11 @@ worker.onmessage = async (e) => {
 };
 
 downloadButton.addEventListener('click', () => {
-  const blob = new Blob([asciiText], { type: isColor ? 'text/html' : 'text/plain' });
+  const blob = new Blob([asciiText], { type: colorMode === 'monochrome' ? 'text/plain' : 'text/html' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = isColor ? 'ascii_art.html' : 'ascii_art.txt';
+  a.download = colorMode === 'monochrome' ? 'ascii_art.txt' : 'ascii_art.html';
   a.click();
   URL.revokeObjectURL(url);
 });

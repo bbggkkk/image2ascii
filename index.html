@@ -41,8 +41,14 @@
         <input type="number" id="resolution" value="100" min="1" />
       </div>
       <div class="control-group">
-        <label for="color">Full Color:</label>
-        <input type="checkbox" id="color" />
+        <label for="colorMode">Color Mode:</label>
+        <select id="colorMode">
+          <option value="monochrome">Monochrome</option>
+          <option value="grayscale">Grayscale</option>
+          <option value="16colors">16 Colors</option>
+          <option value="256colors">256 Colors</option>
+          <option value="fullcolor">Full Color</option>
+        </select>
       </div>
       <div class="control-group">
         <label for="asciiChars">Characters:</label>
