@@ -72,8 +72,8 @@ function pixelsToAscii(imageData, resolution, isColor, ASCII_CHARS) {
       rowHtml += isColor ? `<span style="color: ${color};">${char}</span>` : `<span style="color: #000;">${char}</span>`;
     }
     asciiData.push(row);
-    asciiText += rowText + '\\n';
-    htmlText += rowHtml + '\\n';
+    asciiText += rowText + '\n';
+    htmlText += rowHtml + '\n';
   }
   htmlText += '</pre>';
   return {
