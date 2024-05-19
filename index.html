@@ -37,7 +37,6 @@
   <script type="module">
     import '@material/web/all.js';
     import {styles as typescaleStyles} from '@material/web/typography/md-typescale-styles.js';
-
     document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
   </script>
   <script src="/src/index.js" type="module"></script>
@@ -121,6 +120,17 @@
             </div>
         </div>
     </main>
-    
+
+    <md-dialog id="errorDialog" type="alert" aria-label="Error dialog">
+        <div slot="headline" class="dialog-unit title">
+            Fail to Generate
+        </div>
+        <form slot="content" id="form-id" class="dialog-unit content" method="dialog">
+            Resolution is off the charts!
+        </form>
+        <div slot="actions" class="dialog-unit actions">
+            <md-text-button form="form-id">Close</md-text-button>
+        </div>
+      </md-dialog>
 </body>
 </html>

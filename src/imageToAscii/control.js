@@ -77,20 +77,17 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     function imageInputHandler(e){
-        console.time('go')
         if(e.target.files.length > 0){
             readImageFileAsBase64(e.target.files[0]).then(async (base64) => {
                 generateBtn.disabled = false;
                 img.src = base64;
                 app.classList.add('image-uploaded');
-                console.timeEnd('go')
             });
         }else{
             generateBtn.disabled = true;
             img.removeAttribute('src');
             imgWrapper.removeAttribute('style');
-            app.classList.remove('image-uploaded')
-            console.timeEnd('go')
+            app.classList.remove('image-uploaded');
         }
     }
 

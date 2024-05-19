@@ -317,6 +317,22 @@ form .actions :where(md-text-button, md-filled-tonal-button){
     width: 100%;
 }
 
+/* md-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+md-dialog .dialog-unit {
+    padding: 24px;
+}
+md-dialog .content {
+    padding: 0 24px;
+}
+md-dialog .actions {
+    padding: 24px;
+} */
+
 #divider-container {
     padding: var(--cp) 0;
 }
