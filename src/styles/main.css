@@ -309,9 +309,14 @@ form {
 }
 form .actions {
     display: flex;
+    flex-direction: column;
     gap: 8px;
     align-items: center;
 }
+form .actions :where(md-text-button, md-filled-tonal-button){
+    width: 100%;
+}
+
 #divider-container {
     padding: var(--cp) 0;
 }
@@ -363,6 +368,12 @@ canvas {
     form {
         width: 334px;
         overflow-y: auto;
+    }
+    form .actions {
+        flex-direction: row;
+    }
+    form .actions :where(md-text-button, md-filled-tonal-button){
+        width: auto;
     }
     md-divider.vertical {
         width: 1px;
