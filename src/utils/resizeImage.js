@@ -4,7 +4,7 @@
  * @param {number} width - The target width for the resized image.
  * @returns {Promise<ImageBitmap>} - A promise that resolves to a new resized ImageBitmap.
  */
-async function resizeImage(image, width) {
+function resizeImage(image, width) {
     const aspectRatio = image.height / image.width;
     const height = Math.round(width * aspectRatio);
     
@@ -13,7 +13,7 @@ async function resizeImage(image, width) {
     
     context.drawImage(image, 0, 0, width, height);
     
-    return await offscreenCanvas.transferToImageBitmap();
+    return offscreenCanvas.transferToImageBitmap();
   }
   
   export { resizeImage };
