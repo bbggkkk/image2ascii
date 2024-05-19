@@ -1,10 +1,8 @@
 import './control.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const errorDialog = document.getElementById('errorDialog');
+  // const errorDialog = document.getElementById('errorDialog');
   const canvasElement = document.getElementById('asciiArtCanvas');
-
-  errorDialog.show();
 
   const worker = new Worker('/src/imageToAscii/worker.js', { type: 'module' });
 
