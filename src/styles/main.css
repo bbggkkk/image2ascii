@@ -107,6 +107,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: inherit;
+    -webkit-tap-highlight-color : transparent;
 }
 
 md-filled-button, md-filled-tonal-button, md-text-button {
@@ -151,7 +152,12 @@ md-outlined-field {
     position: absolute;
     top: 50%;
     left: 50%;
-    visibility: hidden;
+    border: 0;
+    color: transparent;
+    background-color: transparent;
+    overflow: hidden;
+    -webkit-appearance: none;
+    appearance: none;
 }
 .color-wrapper .color-text {
     flex: 1;
