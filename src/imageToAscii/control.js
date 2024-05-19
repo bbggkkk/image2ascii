@@ -1,4 +1,4 @@
-import { readImageFile } from "../utils/readImageFile.js";
+import { readImageFileAsBase64 } from "../utils/readImageFileAsBase64.js";
 
 window.addEventListener('DOMContentLoaded', () => {
     const dropZone = document.body; // 드래그 앤 드롭 영역을 body로 설정
@@ -77,26 +77,20 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     function imageInputHandler(e){
+        console.time('go')
         if(e.target.files.length > 0){
-            readImageFile(e.target.files[0]).then(async (imageBitmap) => {
-                const offscreenCanvas = new OffscreenCanvas(imageBitmap.width, imageBitmap.height);
-                const ctx = offscreenCanvas.getContext('2d');
-                ctx.drawImage(imageBitmap, 0, 0);
-
-                // Blob 생성
-                offscreenCanvas.convertToBlob().then(blob => {
-                    generateBtn.disabled = false;
-                    const blobUrl = URL.createObjectURL(blob);
-                    img.src = blobUrl;
-                    imgWrapper.style.aspectRatio = `${imageBitmap.width}/${imageBitmap.height}`;
-                    app.classList.add('image-uploaded');
-                });
+            readImageFileAsBase64(e.target.files[0]).then(async (base64) => {
+                generateBtn.disabled = false;
+                img.src = base64;
+                app.classList.add('image-uploaded');
+                console.timeEnd('go')
             });
         }else{
             generateBtn.disabled = true;
             img.removeAttribute('src');
             imgWrapper.removeAttribute('style');
             app.classList.remove('image-uploaded')
+            console.timeEnd('go')
         }
     }
 

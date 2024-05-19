@@ -111,6 +111,7 @@
 
 md-filled-button, md-filled-tonal-button, md-text-button {
     padding: revert-layer;
+    font-family: 'Pretendard Variable', sans-serif;
 }
 md-filled-tonal-button {
     --md-circular-progress-size: 24px;
@@ -132,6 +133,7 @@ md-outlined-text-field {
 md-outlined-field {
     width: 100%;
     height: 56px;
+    --_label-text-font: 'Pretendard Variable', sans-serif;
 }
 .color-wrapper {
     width: 100%;
@@ -172,6 +174,10 @@ body {
     max-width: 100%;
     min-height: 100%;
     font-family: 'Pretendard Variable', sans-serif;
+    --md-outlined-text-field-input-text-font: 'Pretendard Variable', sans-serif;
+    --md-outlined-text-field-label-text-font: 'Pretendard Variable', sans-serif;
+    --md-outlined-select-text-field-input-text-font: 'Pretendard Variable', sans-serif;
+    --md-outlined-select-text-field-label-text-font: 'Pretendard Variable', sans-serif;
 }
 
 a {
@@ -186,8 +192,8 @@ li {
 }
 
 md-divider.vertical {
-    width: 1px;
-    height: 100%;
+    width: 100%;
+    height: 1px;
 }
 
 #app {
@@ -200,13 +206,13 @@ md-divider.vertical {
     padding: var(--padding);
 }
 #container {
+    overflow-x: hidden;
+
     width: 100%;
     height: 100%;
     background-color: #fff;
 
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
+    display: block;
     transform: translate3d(0, 0, 0);
     position: relative;
 
@@ -223,6 +229,11 @@ header {
     top: 0;
 
     font-size: 16px;
+    z-index: 9;
+
+    background-color: rgba(255, 255, 255, 0.9);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
 }
 header h1 {
     font-size: inherit;
@@ -245,18 +256,20 @@ header h1 {
 
 #render-container {
     display: flex;
+    flex-direction: column;
     flex: 1;
     overflow: hidden;
 }
 
 #image-wrapper {
-    width: 252px;
+    width: 100%;
+    position: relative;
     margin-bottom: 16px;
     border-radius:9999px;
     background-color: #F0F2F4;
-    aspect-ratio: 3/2;
     overflow: hidden;
     transform: translate3d(0, 0, 0);
+    cursor: pointer;
 }
 #image-wrapper img {
     width: 100%;
@@ -268,8 +281,19 @@ header h1 {
 #app:not(.image-uploaded) #image-wrapper img {
     display: none;
 }
+#app:not(.image-uploaded) #image-wrapper #image-placeholder {
+    width:100%;
+    aspect-ratio: 3/2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#app #image-wrapper #image-placeholder {
+    display: none;
+}
 
 form {
+    width: 100%;
     height: 100%;
     overflow: hidden;
     display: flex;
@@ -280,7 +304,6 @@ form {
 form .actions {
     display: flex;
     gap: 8px;
-    /* justify-content: flex-end; */
     align-items: center;
 }
 #divider-container {
@@ -324,10 +347,20 @@ canvas {
         --padding: 24px;
     }
     #container {
+        display: flex;
+        flex-direction: column;
         overflow: hidden;
     }
+    #render-container {
+        flex-direction: row;
+    }
     form {
+        width: 334px;
         overflow-y: auto;
+    }
+    md-divider.vertical {
+        width: 1px;
+        height: 100%;
     }
 }
 @media screen and (min-width: 780px) {
