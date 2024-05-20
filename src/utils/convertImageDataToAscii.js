@@ -8,7 +8,16 @@ import { getColorValue } from './getColorValue.js';
  * @returns {number} - The brightness value.
  */
 function rgbToBrightness(r, g, b) {
-  return (r + g + b) / 3;
+  // 고정된 보정치
+  const redWeight = 0.299;
+  const greenWeight = 0.587;
+  const blueWeight = 0.114;
+
+  // 보정된 밝기 계산
+  const brightness = redWeight * r + greenWeight * g + blueWeight * b;
+
+  // 밝기 값이 0에서 255 사이에 있도록 보장
+  return Math.max(0, Math.min(255, brightness));
 }
 
 /**
