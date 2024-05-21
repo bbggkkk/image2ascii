@@ -12,6 +12,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const resolutionInput = document.getElementById('resolution');
     const colorModeSelect = document.getElementById('colorMode');
     const charSetInput = document.getElementById('charSet');
+    const ditheringQualityInput = document.getElementById('ditheringQuality');
     const generateBtn = document.getElementById('generateBtn');
     const downloadBtn = document.getElementById('downloadBtn');
 
@@ -45,21 +46,18 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    document.querySelectorAll('md-outlined-field md-slider').forEach(slider => {
+        sliderInputHanlder({target:slider});
+        slider.addEventListener('input', sliderInputHanlder);
+    });
+
     generateBtn.addEventListener('click', () => {
-        const resolution = parseInt(resolutionInput.value);
-        const colorMode = colorModeSelect.value;
-        const monochromeColor = monochromeColorInput.value;
-        const charSet = charSetInput.value;
+        const config = Object.fromEntries([...document.querySelectorAll('.render-config')].map(configElement => [configElement.name, configElement.value]))
         const imageFile = imageUploadInput.files[0];
 
-        if (imageFile) {
-            const config = {
-                resolution: resolution,
-                colorMode: colorMode,
-                monochromeColor: monochromeColor,
-                chars: charSet
-            };
+        console.dir(config);
 
+        if (imageFile) {
             // Custom event to notify about generating ASCII art
             const generateEvent = new CustomEvent('generateAsciiArt', { detail: { config, imageFile } });
             document.dispatchEvent(generateEvent);
@@ -104,8 +102,12 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function disableInputs() {
-        document.querySelectorAll('#resolution, #colorMode, #monochromeColor, #charSet, #imageUpload, #uploadButton, #generateBtn, #monochrome-wrap').forEach(input => {
+        document.querySelectorAll('.render-config-ui').forEach(input => {
             input.disabled = true;
         });
+    }
+
+    function sliderInputHanlder({target}){
+        target.parentNode.querySelector('p').innerText = target.value;
     }
 });

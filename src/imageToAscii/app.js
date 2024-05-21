@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function enableInputs() {
-    document.querySelectorAll('#resolution, #colorMode, #monochromeColor, #charSet, #imageUpload, #uploadButton, #generateBtn, #monochrome-wrap').forEach(input => {
+    document.querySelectorAll('.render-config-ui').forEach(input => {
       input.disabled = false;
     });
   }
