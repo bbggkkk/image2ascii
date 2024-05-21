@@ -68,11 +68,11 @@
                             </div>
                         </div>
                         <input id="imageUpload" type="file" accept="image/*">
-                        <md-filled-button id="uploadButton" class="button" type="button"><svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M178.34,165.66,160,147.31V208a8,8,0,0,1-16,0V147.31l-18.34,18.35a8,8,0,0,1-11.32-11.32l32-32a8,8,0,0,1,11.32,0l32,32a8,8,0,0,1-11.32,11.32ZM160,40A88.08,88.08,0,0,0,81.29,88.68,64,64,0,1,0,72,216h40a8,8,0,0,0,0-16H72a48,48,0,0,1,0-96c1.1,0,2.2,0,3.29.12A88,88,0,0,0,72,128a8,8,0,0,0,16,0,72,72,0,1,1,100.8,66,8,8,0,0,0,3.2,15.34,7.9,7.9,0,0,0,3.2-.68A88,88,0,0,0,160,40Z"/></svg>Upload File</md-filled-button>
+                        <md-filled-button id="uploadButton" class="button render-config-ui" type="button"><svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M178.34,165.66,160,147.31V208a8,8,0,0,1-16,0V147.31l-18.34,18.35a8,8,0,0,1-11.32-11.32l32-32a8,8,0,0,1,11.32,0l32,32a8,8,0,0,1-11.32,11.32ZM160,40A88.08,88.08,0,0,0,81.29,88.68,64,64,0,1,0,72,216h40a8,8,0,0,0,0-16H72a48,48,0,0,1,0-96c1.1,0,2.2,0,3.29.12A88,88,0,0,0,72,128a8,8,0,0,0,16,0,72,72,0,1,1,100.8,66,8,8,0,0,0,3.2,15.34,7.9,7.9,0,0,0,3.2-.68A88,88,0,0,0,160,40Z"/></svg>Upload File</md-filled-button>
                     </label>
                     <md-divider inset></md-divider>
-                    <md-outlined-text-field class="button" type="number" id="resolution" label="Resolution" min="1" max="1000" value="100"></md-outlined-text-field>
-                    <md-outlined-select id="colorMode" label="Color Mode">
+                    <md-outlined-text-field type="number" id="resolution" class="render-config render-config-ui" label="Resolution" min="1" max="1000" value="100" name="resolution"></md-outlined-text-field>
+                    <md-outlined-select id="colorMode" class="render-config render-config-ui" label="Color Mode" name="colorMode">
                         <md-select-option selected value="monochrome">
                           <div slot="headline">Monochrome</div>
                         </md-select-option>
@@ -92,33 +92,42 @@
                           <div slot="headline">24bit Colors</div>
                         </md-select-option>
                     </md-outlined-select>
-                    <md-outlined-field id="monochrome-wrap" label="Monochrome Color" populated tabindex="0">
+                    <md-outlined-field id="monochrome-wrap" class="render-config-ui" label="Monochrome Color" populated tabindex="0">
                         <label for="monochromeColor" class="color-wrapper content">
                             <p class="color-text">#000000</p>
-                            <input type="color" id="monochromeColor" class="label" value="#000000">
+                            <input type="color" id="monochromeColor" class="render-config render-config-ui" class="label" value="#000000" name="monochromeColor">
                             <div class="color-shape"></div>
                         </label>
                     </md-outlined-field>
-                    <md-outlined-field label="Dithering Quality" populated tabindex="0">
-                      <div class="field-icon" slot="start">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000000" viewBox="0 0 256 256"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,88h80v80H40Zm96-16V56h32V72Zm-16,0H88V56h32Zm0,112v16H88V184Zm16,0h32v16H136Zm0-16V88h80v80Zm80-96H184V56h32ZM72,56V72H40V56ZM40,184H72v16H40Zm176,16H184V184h32v16Z"/></svg>
+                    <md-outlined-field label="Dithering Quality" class="render-config-ui" populated tabindex="0">
+                      <div class="field-icon" slot="end">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000000" viewBox="0 0 256 256"><path d="M72,60A12,12,0,1,1,60,48,12,12,0,0,1,72,60Zm56-12a12,12,0,1,0,12,12A12,12,0,0,0,128,48Zm68,24a12,12,0,1,0-12-12A12,12,0,0,0,196,72ZM60,116a12,12,0,1,0,12,12A12,12,0,0,0,60,116Zm68,0a12,12,0,1,0,12,12A12,12,0,0,0,128,116Zm68,0a12,12,0,1,0,12,12A12,12,0,0,0,196,116ZM60,184a12,12,0,1,0,12,12A12,12,0,0,0,60,184Zm68,0a12,12,0,1,0,12,12A12,12,0,0,0,128,184Zm68,0a12,12,0,1,0,12,12A12,12,0,0,0,196,184Z"/></svg>
                       </div>
                       <div class="content">
-                        <md-slider id="ditheringQuality" min="0" max="1" value="0.5" step="0.01"></md-slider>
+                        <p class="input-value"></p>
+                        <md-slider id="ditheringQuality" class="render-config render-config-ui" min="0" max="1" value="0" step="0.01" name="ditheringQuality"></md-slider>
                       </div>
-                      <!-- <div class="slider-label-input">
-                        <p>Dithering Quality</p> -->
-                      <!-- </div> -->
+                    </md-outlined-field>
+                    <md-outlined-field label="Edge Scale" class="render-config-ui" populated tabindex="0">
+                      <div class="field-icon" slot="end">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000000" viewBox="0 0 256 256"><path d="M80,48a8,8,0,0,1-8,8H40V72a8,8,0,0,1-16,0V56A16,16,0,0,1,40,40H72A8,8,0,0,1,80,48ZM32,152a8,8,0,0,0,8-8V112a8,8,0,0,0-16,0v32A8,8,0,0,0,32,152Zm40,48H40V184a8,8,0,0,0-16,0v16a16,16,0,0,0,16,16H72a8,8,0,0,0,0-16Zm72,0H112a8,8,0,0,0,0,16h32a8,8,0,0,0,0-16Zm80-24a8,8,0,0,0-8,8v16H184a8,8,0,0,0,0,16h32a16,16,0,0,0,16-16V184A8,8,0,0,0,224,176Zm0-72a8,8,0,0,0-8,8v32a8,8,0,0,0,16,0V112A8,8,0,0,0,224,104Zm-8-64H184a8,8,0,0,0,0,16h32V72a8,8,0,0,0,16,0V56A16,16,0,0,0,216,40Zm-72,0H112a8,8,0,0,0,0,16h32a8,8,0,0,0,0-16Z"/></svg>
+                      </div>
+                      <div class="content">
+                        <p class="input-value"></p>
+                        <md-slider id="edgeScale" class="render-config render-config-ui" min="0" max="255" value="0" step="1" name="edgeScale"></md-slider>
+                      </div>
                     </md-outlined-field>
                     <md-outlined-text-field
+                        class="render-config render-config-ui"
                         id="charSet" value="@%#*+=-:. "
+                        name="chars"
                         type="textarea"
                         label="Character Set"
                         rows="3">
                     </md-outlined-text-field>
                     
                     <div class="actions">
-                          <md-filled-tonal-button id="generateBtn">
+                          <md-filled-tonal-button id="generateBtn" class="render-config-ui">
                             <p>Generate</p>
                             <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M216,104H102.09L210,75.51a8,8,0,0,0,5.68-9.84l-8.16-30a15.93,15.93,0,0,0-19.42-11.13L35.81,64.74a15.75,15.75,0,0,0-9.7,7.4,15.51,15.51,0,0,0-1.55,12L32,111.56c0,.14,0,.29,0,.44v88a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V112A8,8,0,0,0,216,104ZM192.16,40l6,22.07-22.62,6L147.42,51.83Zm-66.69,17.6,28.12,16.24-36.94,9.75L88.53,67.37Zm-79.4,44.62-6-22.08,26.5-7L94.69,89.4ZM208,200H48V120H208v80Z"></path></svg>
 

@@ -34,7 +34,7 @@ md-outlined-field {
 }
 .field-icon {
     padding: 16px;
-    padding-right: 0;
+    padding-left: 0;
 }
 .field-icon svg {
     display: block;
@@ -49,10 +49,16 @@ md-outlined-field .content {
     gap: 8px;
     padding: 16px;
 }
+md-outlined-field .content .input-value {
+    width: 1.5em;
+    text-align: right;
+}
 md-outlined-field .content md-slider {
     margin-left: -8px;
-    width: calc(100% + 8px);
-    min-width: 100%;
+    /* width: calc(100% + 8px);
+    min-width: 100%; */
+    flex: 1;
+    min-width: 0;
 }
 .color-wrapper input[type="color"] {
     display: block;
