@@ -23,6 +23,12 @@
   <meta property="twitter:description" content="Convert images to ASCII art with this online tool. Supports full color and custom ASCII characters.">
   <meta property="twitter:image" content="https://image2ascii.glea.me/og.png">
 
+  <link rel="preload" as="script" href="https://esm.run/@material/web/all.js" crossorigin="anonymous">
+  <link rel="preload" as="script" href="https://esm.run/@material/web/typography/md-typescale-styles.js" crossorigin="anonymous">
+  <link rel="preload" as="style" href="/src/styles/var.css">
+  <link rel="preload" as="style" href="/src/styles/main.css">
+  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="/src/styles/var.css">
   <link rel="stylesheet" href="/src/styles/main.css">
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'><text x='0' y='48' font-size='48' fill='black'>🎞️</text></svg>">
@@ -57,7 +63,9 @@
                     <label>
                         <div id="image-wrapper">
                             <img id="img">
-                            <div id="image-placeholder">Click to Upload</div>
+                            <div id="image-placeholder">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V158.75l-26.07-26.06a16,16,0,0,0-22.63,0l-20,20-44-44a16,16,0,0,0-22.62,0L40,149.37V56ZM40,172l52-52,80,80H40Zm176,28H194.63l-36-36,20-20L216,181.38V200ZM144,100a12,12,0,1,1,12,12A12,12,0,0,1,144,100Z"/></svg>
+                            </div>
                         </div>
                         <input id="imageUpload" type="file" accept="image/*">
                         <md-filled-button id="uploadButton" class="button" type="button"><svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M178.34,165.66,160,147.31V208a8,8,0,0,1-16,0V147.31l-18.34,18.35a8,8,0,0,1-11.32-11.32l32-32a8,8,0,0,1,11.32,0l32,32a8,8,0,0,1-11.32,11.32ZM160,40A88.08,88.08,0,0,0,81.29,88.68,64,64,0,1,0,72,216h40a8,8,0,0,0,0-16H72a48,48,0,0,1,0-96c1.1,0,2.2,0,3.29.12A88,88,0,0,0,72,128a8,8,0,0,0,16,0,72,72,0,1,1,100.8,66,8,8,0,0,0,3.2,15.34,7.9,7.9,0,0,0,3.2-.68A88,88,0,0,0,160,40Z"/></svg>Upload File</md-filled-button>
@@ -85,14 +93,25 @@
                         </md-select-option>
                     </md-outlined-select>
                     <md-outlined-field id="monochrome-wrap" label="Monochrome Color" populated tabindex="0">
-                        <label for="monochromeColor" class="color-wrapper">
+                        <label for="monochromeColor" class="color-wrapper content">
                             <p class="color-text">#000000</p>
                             <input type="color" id="monochromeColor" class="label" value="#000000">
                             <div class="color-shape"></div>
                         </label>
                     </md-outlined-field>
+                    <md-outlined-field label="Dithering Quality" populated tabindex="0">
+                      <div class="field-icon" slot="start">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000000" viewBox="0 0 256 256"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,88h80v80H40Zm96-16V56h32V72Zm-16,0H88V56h32Zm0,112v16H88V184Zm16,0h32v16H136Zm0-16V88h80v80Zm80-96H184V56h32ZM72,56V72H40V56ZM40,184H72v16H40Zm176,16H184V184h32v16Z"/></svg>
+                      </div>
+                      <div class="content">
+                        <md-slider id="ditheringQuality" min="0" max="1" value="0.5" step="0.01"></md-slider>
+                      </div>
+                      <!-- <div class="slider-label-input">
+                        <p>Dithering Quality</p> -->
+                      <!-- </div> -->
+                    </md-outlined-field>
                     <md-outlined-text-field
-                        id="charSet" value=" .-=+#"
+                        id="charSet" value="@%#*+=-:. "
                         type="textarea"
                         label="Character Set"
                         rows="3">
