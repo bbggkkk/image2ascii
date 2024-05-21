@@ -54,6 +54,9 @@
             <header>
                 <h1>🎞️ Image to ASCII Art</h1>
                 <div class="link-container">
+                    <md-icon-button id="selectLanguageButton">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M247.15,212.42l-56-112a8,8,0,0,0-14.31,0l-21.71,43.43A88,88,0,0,1,108,126.93,103.65,103.65,0,0,0,135.69,64H160a8,8,0,0,0,0-16H104V32a8,8,0,0,0-16,0V48H32a8,8,0,0,0,0,16h87.63A87.76,87.76,0,0,1,96,116.35a87.74,87.74,0,0,1-19-31,8,8,0,1,0-15.08,5.34A103.63,103.63,0,0,0,84,127a87.55,87.55,0,0,1-52,17,8,8,0,0,0,0,16,103.46,103.46,0,0,0,64-22.08,104.18,104.18,0,0,0,51.44,21.31l-26.6,53.19a8,8,0,0,0,14.31,7.16L148.94,192h70.11l13.79,27.58A8,8,0,0,0,240,224a8,8,0,0,0,7.15-11.58ZM156.94,176,184,121.89,211.05,176Z"/></svg>
+                    </md-icon-button>
                     <a id="github" href="https://github.com/bbggkkk/image2ascii" title="github" target="_blank">
                         <md-ripple for="github"></md-ripple><md-focus-ring for="github"></md-focus-ring><svg viewBox="0 0 98 96" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z" fill="#24292f"/></svg></a>
                   </div>
@@ -148,5 +151,45 @@
             </div>
         </div>
     </main>
+
+    <md-dialog id="errorDialog" type="alert" aria-label="Error dialog">
+      <div slot="headline" class="dialog-unit title">
+          Fail to Generate
+      </div>
+      <form slot="content" id="form-id" class="dialog-unit content" method="dialog">
+          Resolution is off the charts!
+      </form>
+      <div slot="actions" class="dialog-unit actions">
+          <md-text-button form="form-id">Close</md-text-button>
+      </div>
+    </md-dialog>
+
+    <md-dialog id="selectLanguage" aria-label="Select Language">
+      <div slot="headline"  class="dialog-unit title">Language</div>
+        <form id="selectLanguageForm" slot="content" method="dialog" class="dialog-unit content">
+          <label>
+            <md-radio
+              name="language"
+              value="en"
+              aria-label="English"
+              touch-target="wrapper"
+              checked></md-radio>
+            <span aria-hidden="true">English</span>
+          </label>
+          <label>
+            <md-radio
+              name="language"
+              value="ko"
+              aria-label="한국어"
+              touch-target="wrapper"></md-radio>
+            <span aria-hidden="true">한국어</span>
+          </label>
+        </form>
+        <div slot="actions" class="dialog-unit actions">
+          <md-text-button form="selectLanguageForm" value="cancel">Cancel</md-text-button>
+          <md-text-button form="selectLanguageForm" autofocus value="ok">OK</md-text-button>
+        </div>
+    </md-dialog>
+
 </body>
 </html>

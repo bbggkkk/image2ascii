@@ -1,7 +1,7 @@
 import './control.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // const errorDialog = document.getElementById('errorDialog');
+  const errorDialog = document.getElementById('errorDialog');
   const canvasElement = document.getElementById('asciiArtCanvas');
 
   const worker = new Worker('/src/imageToAscii/worker.js', { type: 'module' });
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
       downloadBtn.style.display = 'block';
     } else if (method === 'error') {
       console.error('Error generating ASCII art:', error);
-      alert('Resolution is off the charts!'); //추후에 md-dialog로 변경
+      errorDialog.show();
       enableInputs();
       generateBtn.classList.remove('loading');
     }

@@ -5,6 +5,9 @@
     font-family: inherit;
     -webkit-tap-highlight-color : transparent;
 }
+*.dialog-unit {
+    padding: revert-layer;
+}
 
 md-filled-button, md-filled-tonal-button, md-text-button {
     padding: revert-layer;
@@ -161,11 +164,12 @@ header {
 header h1 {
     font-size: inherit;
 }
+
 .link-container {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 16px;
+    gap: 8px;
     flex: 1;
 }
 .link-container a {
@@ -258,6 +262,17 @@ md-dialog .content {
 md-dialog .actions {
     padding: 24px;
 } */
+md-dialog {
+    display: contents;
+    margin: auto;
+    max-height: min(560px, 100% - 48px);
+    max-width: min(560px, 100% - 48px);
+    min-height: 140px;
+    min-width: 280px;
+    position: fixed;
+    height: fit-content;
+    width: fit-content;
+}
 
 #divider-container {
     padding: var(--cp) 0;
