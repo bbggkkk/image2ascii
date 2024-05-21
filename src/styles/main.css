@@ -29,7 +29,6 @@ md-outlined-text-field {
 
 md-outlined-field {
     width: 100%;
-    height: 56px;
     --_label-text-font: 'Pretendard Variable', sans-serif;
 }
 .field-icon {
@@ -42,7 +41,7 @@ md-outlined-field {
 }
 md-outlined-field .content {
     width: 100%;
-    height: 100%;
+    height: 56px;
     position: relative;
     display: flex;
     align-items: center;
